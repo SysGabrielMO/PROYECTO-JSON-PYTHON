@@ -78,3 +78,40 @@ def buscar_partidos_equipo(datos, nombre_equipo):
         for rival, g1, g2, amarillas in encontrados:
             print("  ", rival, "|", g1, "-", g2, "| Amarillas:", amarillas)
     print("-" * 55 + "\n")
+    
+# -------------------------------------------------------------
+# Ejercicio 4: Buscar goles de un jugador
+
+def buscar_goles_jugador(datos, nombre_jugador):
+    nombre_jugador = nombre_jugador.strip().lower()
+    encontrados = []
+
+    for partido in datos["matches"]:
+        eq1 = partido["team1"]
+        eq2 = partido["team2"]
+        ft = partido["score"].get("ft", ["?", "?"])
+
+        for gol in partido.get("goals1", []):
+            if gol["name"].lower() == nombre_jugador:
+                offset = gol.get("offset", 0)
+                encontrados.append((eq1, eq2, gol["minute"], offset, ft[0], ft[1]))
+
+        for gol in partido.get("goals2", []):
+            if gol["name"].lower() == nombre_jugador:
+                offset = gol.get("offset", 0)
+                encontrados.append((eq1, eq2, gol["minute"], offset, ft[0], ft[1]))
+
+    print("\n" + "-" * 65)
+    if not encontrados:
+        print("  No se encontro al jugador:", nombre_jugador.title())
+    else:
+        print("  Goles de", nombre_jugador.title(), "-", len(encontrados), "gol(es)")
+        print("=" * 65)
+        print("  Partido                           | Minuto | Resultado")
+        print("  " + "-" * 60)
+        for eq1, eq2, minuto, offset, g1, g2 in encontrados:
+            if offset:
+                print("  ", eq1, "vs", eq2, "| Minuto:", minuto, "+", offset, "| Resultado:", g1, "-", g2)
+            else:
+                print("  ", eq1, "vs", eq2, "| Minuto:", minuto, "| Resultado:", g1, "-", g2)
+    print("=" * 65 + "\n")
