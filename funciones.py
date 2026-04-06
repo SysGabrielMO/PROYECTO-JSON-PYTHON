@@ -47,3 +47,34 @@ def contar_amarillas(datos):
     for equipo, cantidad in sorted(equipos.items()):
         print("   ", equipo, "->", cantidad)
     print("-" * 45 + "\n")
+    
+# -------------------------------------------------------------
+# Ejercicio 3: Buscar partidos de un equipo
+
+def buscar_partidos_equipo(datos, nombre_equipo):
+    nombre_equipo = nombre_equipo.strip()
+    encontrados = []
+
+    for partido in datos["matches"]:
+        eq1 = partido["team1"]
+        eq2 = partido["team2"]
+        ft = partido["score"].get("ft", ["?", "?"])
+
+        if nombre_equipo.lower() == eq1.lower():
+            amarillas = partido["yellow_cards"]["team1"]
+            encontrados.append((eq2, ft[0], ft[1], amarillas))
+        elif nombre_equipo.lower() == eq2.lower():
+            amarillas = partido["yellow_cards"]["team2"]
+            encontrados.append((eq1, ft[1], ft[0], amarillas))
+
+    print("\n" + "-" * 55)
+    if not encontrados:
+        print("  No se encontro el equipo:", nombre_equipo)
+    else:
+        print("  Partidos de", nombre_equipo.title(), "-", len(encontrados), "partidos")
+        print("-" * 55)
+        print("  Rival                     | Resultado | Amarillas")
+        print("  " + "-" * 50)
+        for rival, g1, g2, amarillas in encontrados:
+            print("  ", rival, "|", g1, "-", g2, "| Amarillas:", amarillas)
+    print("-" * 55 + "\n")
