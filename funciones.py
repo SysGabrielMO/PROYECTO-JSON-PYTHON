@@ -115,3 +115,46 @@ def buscar_goles_jugador(datos, nombre_jugador):
             else:
                 print("  ", eq1, "vs", eq2, "| Minuto:", minuto, "| Resultado:", g1, "-", g2)
     print("=" * 65 + "\n")
+
+# -------------------------------------------------------------
+# Ejercicio 5: Clasificacion por goles
+
+def clasificacion_por_goles(datos):
+    equipos_goles = {}
+    equipos_jugadores = {}
+
+    for partido in datos["matches"]:
+        eq1 = partido["team1"]
+        eq2 = partido["team2"]
+
+        for eq in (eq1, eq2):
+            if eq not in equipos_goles:
+                equipos_goles[eq] = 0
+                equipos_jugadores[eq] = {}
+
+        for gol in partido.get("goals1", []):
+            if not gol.get("owngoal", False):
+                equipos_goles[eq1] += 1
+                jugador = gol["name"]
+                equipos_jugadores[eq1][jugador] = equipos_jugadores[eq1].get(jugador, 0) + 1
+
+        for gol in partido.get("goals2", []):
+            if not gol.get("owngoal", False):
+                equipos_goles[eq2] += 1
+                jugador = gol["name"]
+                equipos_jugadores[eq2][jugador] = equipos_jugadores[eq2].get(jugador, 0) + 1
+
+    clasificacion = sorted(equipos_goles.items(), key=lambda x: x[1], reverse=True)
+
+    print("\n" + "-" * 55)
+    print("  CLASIFICACION POR GOLES -", datos["name"])
+    print("-" * 55)
+    for pos, (equipo, goles) in enumerate(clasificacion, 1):
+        print("\n ", pos, ".", equipo, "---", goles, "gol(es)")
+        jugadores = equipos_jugadores[equipo]
+        if jugadores:
+            for jugador, n in sorted(jugadores.items(), key=lambda x: x[1], reverse=True):
+                print("      ", jugador, ":", n)
+        else:
+            print("       (sin goles anotados)")
+    print("\n" + "-" * 55 + "\n")
