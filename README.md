@@ -90,3 +90,13 @@ La salida debe mostrar:
 Nombre del equipo
 Total de goles marcados
 Lista de jugadores con sus goles, ordenados de mayor a menor
+
+
+
+## Complicaciones encontradas durante el desarrollo
+
+Una de las principales complicaciones fue interpretar correctamente la estructura del fichero JSON, ya que contiene varios niveles de información anidada. Esto obligó a trabajar con cuidado el acceso a los datos para evitar errores al recorrer partidos, marcadores y goles.
+
+También surgieron dificultades al modificar el JSON original para añadir el campo de tarjetas amarillas, porque era necesario mantener una estructura homogénea en todos los partidos. Además, hubo que controlar casos en los que algunos campos no aparecían siempre de la misma forma.
+
+Otro aspecto que requirió atención fue la implementación de búsquedas por equipo y jugador, gestionando correctamente mayúsculas, minúsculas y espacios introducidos por el usuario. Finalmente, la clasificación por goles también exigió revisar la lógica de cálculo, sobre todo en situaciones especiales como los goles en propia puerta.
